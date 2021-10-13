@@ -5,7 +5,7 @@ public class Distance {
 
         System.out.println(distance(p1, p2));
 
-        System.out.println(p1.distance(p1,p2));
+        System.out.println(p1.distance(p2));
 
     }
 
