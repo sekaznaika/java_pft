@@ -9,7 +9,7 @@ public class ContactEditTest extends TestBase {
     public void testEditContact() throws Exception {
         applicationManager.getNavigationHelper().goToHome();
         applicationManager.getContactHelper().clickEditContact();
-        applicationManager.getContactHelper().fillTheForm(new ContactData("zero","zero","zero","zero","zero"));
+        applicationManager.getContactHelper().fillTheForm(new ContactData("zero","zero","zero","zero","zero", null), false);
         applicationManager.getContactHelper().updateChanges();
         applicationManager.getContactHelper().returnHomePage();
 
