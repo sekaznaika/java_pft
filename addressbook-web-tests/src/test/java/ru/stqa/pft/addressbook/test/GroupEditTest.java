@@ -13,7 +13,7 @@ public class GroupEditTest extends TestBase {
             ap.getGroupHelper().createGroup(new GroupData("1", null, null));
         }
         int before = ap.getGroupHelper().getGroupCount();
-        ap.getGroupHelper().selectGroup();
+        ap.getGroupHelper().selectGroup(before - 1);
         ap.getGroupHelper().editSelectedGroup();
         ap.getGroupHelper().fillGroupForm(new GroupData("0", "0", "0"));
         ap.getGroupHelper().updateGroup();
