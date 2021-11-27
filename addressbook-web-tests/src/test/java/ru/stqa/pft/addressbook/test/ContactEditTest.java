@@ -6,27 +6,26 @@ import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 
 public class ContactEditTest extends TestBase {
 
     @BeforeMethod
     public void ensurePreconditions() {
-        ap.getNavigationHelper().goToHome();
-        if (!ap.getContactHelper().isThereAContact()) {
-            ap.getContactHelper().createContact(new ContactData("Test1", "Test2", "Test3", "test4", "1"));
+        ap.goTo().homePage();
+        if (ap.contact().list().size()==0) {
+            ap.contact().create(new ContactData("Test1", "Test2", "Test3", "test4", "1"));
         }
     }
 
     @Test
     public void testEditContact() throws Exception {
 
-        List<ContactData> before = ap.getContactHelper().getContactList();
+        List<ContactData> before = ap.contact().list();
         int index = before.size() - 1;
         ContactData contact = new ContactData(before.get(index).getId(), "zero", "zero", "zero", "zero", "null");
-        ap.getContactHelper().modifyContact(index, contact);
-        List<ContactData> after = ap.getContactHelper().getContactList();
+        ap.contact().modify(index, contact);
+        List<ContactData> after = ap.contact().list();
 
         before.remove(index);
         before.add(contact);

@@ -13,10 +13,10 @@ public class ContactCreationTest extends TestBase {
 
     @Test
     public void testCreateContact() throws Exception {
-        List<ContactData> before = ap.getContactHelper().getContactList();
+        List<ContactData> before = ap.contact().list();
         ContactData contact = new ContactData("Test1", "Test2", "Test3", "test4", "1");
-        ap.getContactHelper().createContact(contact);
-        List<ContactData> after = ap.getContactHelper().getContactList();
+        ap.contact().create(contact);
+        List<ContactData> after = ap.contact().list();
 
         contact.setId(after.stream().max((Comparator<ContactData>) (o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId());
         before.add(contact);
