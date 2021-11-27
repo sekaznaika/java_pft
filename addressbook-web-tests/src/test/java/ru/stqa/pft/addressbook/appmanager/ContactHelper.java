@@ -1,13 +1,11 @@
 package ru.stqa.pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
-import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +49,6 @@ public class ContactHelper extends HelperBase {
 
     public void fillTheForm(ContactData contactData, boolean creation) {
         type(By.name("firstname"), contactData.getFirstname());
-        // type(By.name("middlename"), contactData.getMiddlename());
         type(By.name("lastname"), contactData.getLastname());
         type(By.name("address"), contactData.getAddress());
         type(By.name("email"), contactData.getEmail());
@@ -78,6 +75,13 @@ public class ContactHelper extends HelperBase {
         submitChanges();
         returnHomePage();
     }
+    public void modifyContact(int index, ContactData contact) {
+        clickEditContact(index);
+        fillTheForm(contact, false);
+        updateChanges();
+        returnHomePage();
+    }
+
 
     public List<ContactData> getContactList() {
         List<ContactData> contacts = new ArrayList<ContactData>();
