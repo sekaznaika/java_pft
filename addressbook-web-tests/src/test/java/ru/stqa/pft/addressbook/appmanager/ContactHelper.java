@@ -8,7 +8,9 @@ import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ContactHelper extends HelperBase {
 
@@ -20,9 +22,9 @@ public class ContactHelper extends HelperBase {
         click(By.linkText("home page"));
     }
 
-    public void selectContact(int index) {
+    public void selectContactById(int id) {
 
-        wd.findElements(By.name("selected[]")).get(index).click();
+        wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
     }
 
     public void clickEditContact(int index) {
@@ -65,10 +67,6 @@ public class ContactHelper extends HelperBase {
         click(By.linkText("add new"));
     }
 
-    public boolean isThereAContact() {
-        return isElementPresent(By.name("selected[]"));
-    }
-
     public void create(ContactData contact) {
         goToAddNewContact();
         fillTheForm(contact, true);
@@ -82,8 +80,8 @@ public class ContactHelper extends HelperBase {
         returnHomePage();
     }
 
-    public void delete(int index) {
-        selectContact(index);
+    public void delete(ContactData contact) {
+        selectContactById(contact.getId());
         clickDeleteContact();
         closeDeleteAlert();
     }
@@ -102,4 +100,20 @@ public class ContactHelper extends HelperBase {
         }
         return contacts;
     }
+
+    public Set<ContactData> all() {
+        Set<ContactData> contacts = new HashSet<ContactData>();
+        List<WebElement> elements = wd.findElements(By.name("entry"));
+        for (WebElement element : elements) {
+            List<WebElement> cells = element.findElements(By.tagName("td"));
+            String fname = cells.get(2).getText();
+            String lname = cells.get(1).getText();
+            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
+            ContactData contact = new ContactData().withId(id).withFirstname(fname).withLastname(lname);
+            contacts.add(contact);
+        }
+        return contacts;
+    }
+
+
 }

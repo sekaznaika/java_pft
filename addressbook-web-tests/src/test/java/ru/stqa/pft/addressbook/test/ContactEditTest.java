@@ -5,36 +5,34 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.Set;
 
 public class ContactEditTest extends TestBase {
 
     @BeforeMethod
     public void ensurePreconditions() {
         ap.goTo().homePage();
-        if (ap.contact().list().size()==0) {
+        if (ap.contact().all().size() == 0) {
             ap.contact().create(new ContactData()
                     .withFirstname("Test1").withLastname("Test2").withEmail("Test3").withAddress("test4")
-                    .withGroup("1"));;
+                    .withGroup("1"));
+            ;
         }
     }
 
     @Test
     public void testEditContact() throws Exception {
 
-        List<ContactData> before = ap.contact().list();
+        Set<ContactData> before = ap.contact().all();
+        ContactData modifiedContact = before.iterator().next();
         int index = before.size() - 1;
-        ContactData contact = new ContactData().withId(before.get(index).getId()).withFirstname("zero")
+        ContactData contact = new ContactData().withId(modifiedContact.getId()).withFirstname("zero")
                 .withLastname("zero").withEmail("zero").withAddress("zero");
         ap.contact().modify(index, contact);
-        List<ContactData> after = ap.contact().list();
+        Set<ContactData> after = ap.contact().all();
 
-        before.remove(index);
+        before.remove(modifiedContact);
         before.add(contact);
-        Comparator<? super ContactData> byId = (c1, c2) -> Integer.compare(c1.getId(), c2.getId());
-        before.sort(byId);
-        after.sort(byId);
         Assert.assertEquals(before, after);
     }
 }
