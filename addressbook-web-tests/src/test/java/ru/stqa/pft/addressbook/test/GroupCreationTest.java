@@ -13,7 +13,7 @@ public class GroupCreationTest extends TestBase {
     public void testGroupCreation() throws Exception {
         ap.goTo().groupPage();
         List<GroupData> before = ap.group().list();
-        GroupData group = new GroupData("1", null, null);
+        GroupData group = new GroupData().withName("1");
         ap.group().create(group);
         List<GroupData> after = ap.group().list();
         Assert.assertEquals(after.size(), before.size() + 1);

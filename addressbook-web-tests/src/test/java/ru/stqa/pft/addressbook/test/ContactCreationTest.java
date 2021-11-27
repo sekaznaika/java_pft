@@ -14,11 +14,13 @@ public class ContactCreationTest extends TestBase {
     @Test
     public void testCreateContact() throws Exception {
         List<ContactData> before = ap.contact().list();
-        ContactData contact = new ContactData("Test1", "Test2", "Test3", "test4", "1");
+        ContactData contact = new ContactData()
+                .withFirstname("Test1").withLastname("Test2").withEmail("Test3").withAddress("test4")
+                .withGroup("1");
         ap.contact().create(contact);
         List<ContactData> after = ap.contact().list();
 
-        contact.setId(after.stream().max((Comparator<ContactData>) (o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId());
+        contact.withId(after.stream().max((Comparator<ContactData>) (o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId());
         before.add(contact);
         Comparator<? super ContactData> byId = (c1, c2) -> Integer.compare(c1.getId(), c2.getId());
         before.sort(byId);

@@ -14,7 +14,9 @@ public class ContactEditTest extends TestBase {
     public void ensurePreconditions() {
         ap.goTo().homePage();
         if (ap.contact().list().size()==0) {
-            ap.contact().create(new ContactData("Test1", "Test2", "Test3", "test4", "1"));
+            ap.contact().create(new ContactData()
+                    .withFirstname("Test1").withLastname("Test2").withEmail("Test3").withAddress("test4")
+                    .withGroup("1"));;
         }
     }
 
@@ -23,7 +25,8 @@ public class ContactEditTest extends TestBase {
 
         List<ContactData> before = ap.contact().list();
         int index = before.size() - 1;
-        ContactData contact = new ContactData(before.get(index).getId(), "zero", "zero", "zero", "zero", "null");
+        ContactData contact = new ContactData().withId(before.get(index).getId()).withFirstname("zero")
+                .withLastname("zero").withEmail("zero").withAddress("zero");
         ap.contact().modify(index, contact);
         List<ContactData> after = ap.contact().list();
 

@@ -15,7 +15,7 @@ public class GroupEditTest extends TestBase {
     public void ensurePreconditions() {
         ap.goTo().groupPage();
         if (ap.group().list().size() == 0) {
-            ap.group().create(new GroupData("1", null, null));
+            ap.group().create(new GroupData().withName("1"));
         }
     }
 
@@ -23,7 +23,8 @@ public class GroupEditTest extends TestBase {
     public void testDeleteGroup() throws Exception {
         List<GroupData> before = ap.group().list();
         int index = before.size() - 1;
-        GroupData group = new GroupData(before.get(index).getId(), "0", "0", "0");
+        GroupData group = new GroupData()
+                .withId(before.get(index).getId()).withName("0").withHeader("0").withFooter("0");
         ap.group().modify(index, group);
         List<GroupData> after = ap.group().list();
         Assert.assertEquals(after.size(), before.size());
