@@ -31,6 +31,9 @@ public class ContactHelper extends HelperBase {
         wd.findElement(By.cssSelector("a[href='edit.php?id=" + id + "']")).click();
         ;
     }
+    public int count() {
+        return wd.findElements(By.name("entry")).size();
+    }
 
     public void clickDeleteContact() {
         click(By.xpath("//input[@value='Delete']"));
@@ -109,6 +112,7 @@ public class ContactHelper extends HelperBase {
         }
         return new Contacts(contactsCache);
     }
+
 
 
 }
