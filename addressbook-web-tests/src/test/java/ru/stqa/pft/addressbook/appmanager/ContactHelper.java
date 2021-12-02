@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.util.List;
 
@@ -62,8 +63,11 @@ public class ContactHelper extends HelperBase {
         type(By.name("work"), contactData.getWorkPhone());
 
         if (creation) {
-            new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
-        } else {
+            if (contactData.getGroups().size() > 0) {
+                Assert.assertTrue(contactData.getGroups().size() == 1);
+                new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroups().iterator().next().getName());
+            } }
+            else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
 
@@ -138,5 +142,38 @@ public class ContactHelper extends HelperBase {
                 .withEmail(email).withEmail2(email2).withEmail3(email3)
                 .withAddress(address);
 
+    }
+
+    public void addContactToGroup(ContactData before, GroupData groupAdd) {
+    selectContactById(before.getId());
+        selectGroupForAdd(groupAdd.getId());
+        submitAddingContactsToGroup();
+        returnToGroupPage(groupAdd);
+    }
+
+    private void selectGroupForAdd(int id) {
+        new Select(wd.findElement(By.name("to_group"))).selectByValue(String.valueOf(id));
+    }
+
+    private void selectGroupForRemove(int id) {
+        new Select(wd.findElement(By.name("group"))).selectByValue(String.valueOf(id));
+    }
+    private void submitAddingContactsToGroup() {
+        wd.findElement(By.name("add")).click();
+    }
+    private void returnToGroupPage(GroupData groupAdd) {
+        wd.findElement(By.linkText("group page \"" + groupAdd.getName() + "\"")).click();
+    }
+
+
+    public void removeFromGroup(ContactData contact, GroupData groupForRemove) {
+        selectGroupForRemove(groupForRemove.getId());
+        selectContactById(contact.getId());
+        submitRemove();
+        returnToGroupPage(groupForRemove);
+    }
+
+    private void submitRemove() {
+        wd.findElement(By.name("remove")).click();
     }
 }

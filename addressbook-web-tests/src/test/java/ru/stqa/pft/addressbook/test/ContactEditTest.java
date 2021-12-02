@@ -17,14 +17,14 @@ public class ContactEditTest extends TestBase {
         if (ap.db().contacts().size() == 0) {
             ap.contact().create(new ContactData()
                     .withFirstname("Test1").withLastname("Test2").withEmail("Test3").withAddress("test4")
-                    .withGroup("1").withWorkPhone("111").withMobilePhone("222").withHomePhone("333"));
+                    .withWorkPhone("111").withMobilePhone("222").withHomePhone("333"));
             ;
         }
     }
 
     @Test
     public void testEditContact() throws Exception {
-
+        ap.goTo().homePage();
         Contacts before = ap.db().contacts();
         ContactData modifiedContact = before.iterator().next();
         ContactData contact = new ContactData().withId(modifiedContact.getId()).withFirstname("zero")
