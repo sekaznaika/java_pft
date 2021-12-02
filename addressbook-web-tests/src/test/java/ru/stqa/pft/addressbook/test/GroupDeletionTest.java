@@ -14,7 +14,7 @@ public class GroupDeletionTest extends TestBase {
     @BeforeMethod
     public void ensurePreconditions() {
         ap.goTo().groupPage();
-        if (ap.group().all().size() == 0) {
+        if (ap.db().groups().size() == 0) {
             ap.group().create(new GroupData().withName("1"));
         }
     }
@@ -22,11 +22,11 @@ public class GroupDeletionTest extends TestBase {
     @Test
     public void testGroupDeletion() throws Exception {
 
-        Groups before = ap.group().all();
+        Groups before = ap.db().groups();
         GroupData deletedGroup = before.iterator().next();
         ap.group().delete(deletedGroup);
         assertThat(ap.group().count(), equalTo(before.size() - 1));
-        Groups after = ap.group().all();
+        Groups after = ap.db().groups();
         assertThat(after, equalTo(before.without(deletedGroup)));
     }
 

@@ -40,10 +40,10 @@ public class ContactCreationTest extends TestBase {
 
     @Test(dataProvider = "validGroupsFromJson")
     public void testCreateContact(ContactData contact) {
-        Contacts before = ap.contact().all();
+        Contacts before = ap.db().contacts();
         ap.contact().create(contact);
         assertEquals(ap.contact().count(), before.size() + 1);
-        Contacts after = ap.contact().all();
+        Contacts after = ap.db().contacts();
         assertThat(after, equalTo(before.withAdded(contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
 
     }

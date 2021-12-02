@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -37,10 +38,10 @@ public class GroupCreationTest extends TestBase {
     @Test(dataProvider = "validGroupsFromJson")
     public void testGroupCreation(GroupData group) {
         ap.goTo().groupPage();
-        Groups before = ap.group().all();
+        Groups before = ap.db().groups();
         ap.group().create(group);
         assertThat(ap.group().count(), equalTo(before.size() + 1));
-        Groups after = ap.group().all();
+        Groups after = ap.db().groups();
         assertThat(after, equalTo(
                 before.withAdded(group.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
     }
@@ -48,12 +49,11 @@ public class GroupCreationTest extends TestBase {
     @Test
     public void testBadGroupCreation() {
         ap.goTo().groupPage();
-        Groups before = ap.group().all();
+        Groups before = ap.db().groups();
         GroupData group = new GroupData().withName("test2'");
         ap.group().create(group);
         assertThat(ap.group().count(), equalTo(before.size()));
-        Groups after = ap.group().all();
-        group.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt());
+        Groups after = ap.db().groups();
         assertThat(after, equalTo(before));
     }
 
