@@ -7,15 +7,15 @@ import ru.stqa.pft.mantis.appmanager.ApplicationManager;
 
 public class TestBase {
 
-    protected static final ApplicationManager ap = new ApplicationManager(System.getProperty("browser",BrowserType.CHROME));
+    protected static final ApplicationManager app = new ApplicationManager(System.getProperty("browser",BrowserType.CHROME));
     @BeforeSuite(alwaysRun = true)
     public void setUp() throws Exception {
-        ap.init();
+        app.init();
     }
 
     @AfterSuite(alwaysRun = true)
     public void tearDown() throws Exception {
-        ap.stop();
+        app.stop();
     }
 
 }
