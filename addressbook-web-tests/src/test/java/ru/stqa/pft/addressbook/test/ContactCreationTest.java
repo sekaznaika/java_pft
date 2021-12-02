@@ -38,12 +38,9 @@ public class ContactCreationTest extends TestBase {
         return contacts.stream().map((g) -> new Object[] {g}).collect(Collectors.toList()).iterator();
     }
 
-    @Test
-    public void testCreateContact() throws Exception {
+    @Test(dataProvider = "validGroupsFromJson")
+    public void testCreateContact(ContactData contact) {
         Contacts before = ap.contact().all();
-        ContactData contact = new ContactData()
-                .withFirstname("Test1").withLastname("Test2").withEmail("Test3").withAddress("test4")
-                .withGroup("1").withWorkPhone("111").withMobilePhone("222").withHomePhone("333");
         ap.contact().create(contact);
         assertEquals(ap.contact().count(), before.size() + 1);
         Contacts after = ap.contact().all();

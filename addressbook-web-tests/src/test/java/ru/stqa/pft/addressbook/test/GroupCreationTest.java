@@ -34,11 +34,10 @@ public class GroupCreationTest extends TestBase {
         return groups.stream().map((g) -> new Object[] {g}).collect(Collectors.toList()).iterator();
     }
 
-    @Test
-    public void testGroupCreation() throws Exception {
+    @Test(dataProvider = "validGroupsFromJson")
+    public void testGroupCreation(GroupData group) {
         ap.goTo().groupPage();
         Groups before = ap.group().all();
-        GroupData group = new GroupData().withName("1");
         ap.group().create(group);
         assertThat(ap.group().count(), equalTo(before.size() + 1));
         Groups after = ap.group().all();
@@ -47,7 +46,7 @@ public class GroupCreationTest extends TestBase {
     }
 
     @Test
-    public void testBadGroupCreation() throws Exception {
+    public void testBadGroupCreation() {
         ap.goTo().groupPage();
         Groups before = ap.group().all();
         GroupData group = new GroupData().withName("test2'");
