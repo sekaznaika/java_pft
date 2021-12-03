@@ -52,7 +52,7 @@ public class JamesHelper {
         closeTelnetSession();
     }
 
-    private void initTelnetSession() {
+    public void initTelnetSession() {
         mailServer = app.getProperty("mailserver.host");
         int port = Integer.parseInt(app.getProperty("mailserver.port"));
         String login = app.getProperty("mailserver.adminlogin");
@@ -115,7 +115,7 @@ public class JamesHelper {
         }
     }
 
-    private void closeTelnetSession() {
+    public void closeTelnetSession() {
         write("quit");
     }
 
@@ -140,11 +140,13 @@ public class JamesHelper {
         return folder;
     }
 
-    public List<MailMessage> waitForMail(String username, String password, long timeout) throws MessagingException {
+    public List<MailMessage> waitForMail(String username, String password, List<MailMessage> MailBefore, long timeout) throws MessagingException {
+
         long now = System.currentTimeMillis();
         while (System.currentTimeMillis() < now + timeout) {
             List<MailMessage> allMail = getAllMail(username, password);
-            if (allMail.size() > 0) {
+            if (allMail.size() > MailBefore.size()) {
+                allMail.removeAll(MailBefore);
                 return allMail;
             }
             try {
@@ -153,8 +155,9 @@ public class JamesHelper {
                 e.printStackTrace();
             }
         }
-        throw new Error("No mail :(");
+        throw new Error("No new mail :(");
     }
+
 
     public List<MailMessage> getAllMail(String username, String password) throws MessagingException {
         Folder inbox = openInbox(username, password);
