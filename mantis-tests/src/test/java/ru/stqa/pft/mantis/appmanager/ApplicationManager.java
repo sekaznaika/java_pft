@@ -17,13 +17,14 @@ public class ApplicationManager {
     private RegistrationHelper registrationHelper;
     private final Properties properties;
     private WebDriver wd;
+    private SoapHelper soapHelper;
+
 
     private String browser;
 
     private FtpHelper ftp;
     private MailHelper mailHelper;
     private JamesHelper jamesHelper;
-    private RegistrationHelper registrationHelper;
     private AuthorizationHelper authorizationHelper;
     private NavigationHelper navigationHelper;
     private UserHelper userHelper;
@@ -66,7 +67,6 @@ public class ApplicationManager {
     }
 
 
-
     public HttpSession newSession() {
         return new HttpSession(this);
     }
@@ -74,8 +74,6 @@ public class ApplicationManager {
     public String getProperty(String key) {
         return properties.getProperty(key);
     }
-
-    p
 
     public WebDriver getDriver() {
         if (wd == null) {
@@ -146,4 +144,11 @@ public class ApplicationManager {
         return setPasswordHelper;
     }
 
+    public SoapHelper soap() {
+        if (soapHelper == null) {
+            soapHelper = new SoapHelper(this);
+        }
+        return soapHelper;
+    }
 }
+
