@@ -30,6 +30,7 @@ public class ContactHelper extends HelperBase {
         wd.findElement(By.cssSelector("a[href='edit.php?id=" + id + "']")).click();
         ;
     }
+
     public int count() {
         return wd.findElements(By.name("entry")).size();
     }
@@ -59,15 +60,15 @@ public class ContactHelper extends HelperBase {
         type(By.name("email2"), contactData.getEmail());
         type(By.name("email3"), contactData.getEmail());
         type(By.name("home"), contactData.getHomePhone());
-        type(By.name("mobile"),contactData.getMobilePhone());
+        type(By.name("mobile"), contactData.getMobilePhone());
         type(By.name("work"), contactData.getWorkPhone());
 
         if (creation) {
             if (contactData.getGroups().size() > 0) {
                 Assert.assertTrue(contactData.getGroups().size() == 1);
                 new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroups().iterator().next().getName());
-            } }
-            else {
+            }
+        } else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
 
@@ -145,7 +146,7 @@ public class ContactHelper extends HelperBase {
     }
 
     public void addContactToGroup(ContactData before, GroupData groupAdd) {
-    selectContactById(before.getId());
+        selectContactById(before.getId());
         selectGroupForAdd(groupAdd.getId());
         submitAddingContactsToGroup();
         returnToGroupPage(groupAdd);
@@ -158,22 +159,27 @@ public class ContactHelper extends HelperBase {
     private void selectGroupForRemove(int id) {
         new Select(wd.findElement(By.name("group"))).selectByValue(String.valueOf(id));
     }
+
     private void submitAddingContactsToGroup() {
         wd.findElement(By.name("add")).click();
     }
+
     private void returnToGroupPage(GroupData groupAdd) {
         wd.findElement(By.linkText("group page \"" + groupAdd.getName() + "\"")).click();
     }
 
 
-    public void removeFromGroup(ContactData contact, GroupData groupForRemove) {
-        selectGroupForRemove(groupForRemove.getId());
+    public void removeFromGroup(ContactData contact) {
         selectContactById(contact.getId());
         submitRemove();
-        returnToGroupPage(groupForRemove);
     }
 
     private void submitRemove() {
         wd.findElement(By.name("remove")).click();
     }
+
+    public void groupSelect(int id) {
+        click(By.cssSelector("select[name=\"group\"] > option[value='" + id + "']"));
+    }
 }
+

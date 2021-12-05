@@ -33,6 +33,14 @@ public class GroupData {
     private Set<ContactData> contacts = new HashSet<ContactData>();
 
 
+    public Contacts getContacts() {
+        return new Contacts(contacts);
+    }
+
+    public void setContacts(Set<ContactData> contacts) {
+        this.contacts = contacts;
+    }
+
     public int getId() {
         return id;
     }
