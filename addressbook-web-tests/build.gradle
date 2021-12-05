@@ -15,4 +15,17 @@ dependencies {
     implementation 'org.hibernate:hibernate-tools:5.6.1.Final'
 
 }
+task testContacts(type:Test){
+useTestNG {
+    suites 'src/test/resources/testing-contacts.xml'
+}
+}
+if (project.hasProperty('browser')){
+    systemProperty 'browser', "${browser}"
+}
+if (project.hasProperty('target')){
+    systemProperty 'target', "${target}"
+}
+
+
 
