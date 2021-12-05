@@ -17,7 +17,7 @@ dependencies {
 }
 task testContacts(type:Test) {
     useTestNG {
-        suites 'src/test/resources/testing-contacts.xml'
+        suites 'src/test/resources/testing-groups.xml'
     }
 
     if (project.hasProperty('browser')) {
